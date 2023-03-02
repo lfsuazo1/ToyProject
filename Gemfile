@@ -30,7 +30,8 @@ gem "jbuilder"
 gem 'devise'
 
 gem "administrate"
-
+#Cors
+gem 'rack-cors'
 #Slack and JOB
 gem 'slack-ruby-client'
 gem 'delayed_job_active_record'
