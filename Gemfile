@@ -31,9 +31,16 @@ gem 'devise'
 
 gem "administrate"
 
-#Boostrap
+#Slack and JOB
+gem 'slack-ruby-client'
+gem 'delayed_job_active_record'
+gem 'rufus-scheduler'
+
+#Bootstrap
 gem 'bootstrap', '~> 5.2.2'
 gem 'popper_js', '~> 2.11.5'
+
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
