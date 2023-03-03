@@ -36,7 +36,7 @@ module SlackClient
             "elements": [
               {
                 "type": 'plain_text',
-                "text": "Remaining topics in the pool: <#{size}>",
+                "text": "Remaining topics in the pool: #{size}",
                 "emoji": true
               }
             ]

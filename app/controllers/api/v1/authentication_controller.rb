@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+module Api
+  module V1
+    class AuthenticationController < ApplicationController
+      include Devise::Controllers::SignInOut
+      skip_before_action :authenticate_user!
+
+      def create
+        if (@user = User.find_by_email(params[:user][:email])) && @user.valid_password?(params[:user][:password])
+          sign_in(@user)
+          render json: { token: JsonWebToken.encode(sub: @user.id) }
+        else
+          render json: { errors: ['Invalid email or password'] }
+        end
+      end
+
+      def destroy
+        if current_user
+          sign_out(current_user)
+          render json: {msg:"Godbye"}
+        end
+      end
+
+    end
+  end
+end
