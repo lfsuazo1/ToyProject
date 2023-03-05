@@ -24,7 +24,6 @@ class QuestionDashboard < Administrate::BaseDashboard
     id
     message
     user
-    created_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
