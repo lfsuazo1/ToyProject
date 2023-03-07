@@ -2,18 +2,18 @@
 
 module Api
   module V1
-    class UsersController < ApplicationController
-      skip_before_action :authenticate_user!
-
+    class UsersController < ApplicationApiController
+      #skip_before_action :authenticate_user!
+      before_action :authenticate_user!, except: :create
       def index
         @users = User.all
-        render json: serializer.new(@users, include: ['question']), status: :ok
+        render json: @users, include: ['question'], status: :ok
       end
 
       def create
         @user = User.new(user_params)
         if @user.save
-          render json: serializer.new(@user), status: :created
+          render json: @user, status: :created
         else
           render json: { errors: @user.errors }, status: 422
         end
@@ -21,14 +21,14 @@ module Api
 
       def show
         @user = User.find(params[:id])
-        render json: serializer.new(@user, include: ['question']), status: :ok
+        render json: @user, include: ['question'], status: :ok
       rescue ActiveRecord::RecordNotFound
         render json: { error: { "status": 404, "detail": 'Object not found' } }, status: :not_found
       end
 
       def get_top_users
         @users = User.top_five_users
-        render json: serializer.new(@users), status: :ok
+        render json: @users, status: :ok
       end
 
       def destroy
@@ -45,7 +45,7 @@ module Api
       def update
         @user = User.find(params[:id])
         if @user.update(user_params)
-          render json: serializer.new(@user), status: :ok
+          render json: @user, status: :ok
         else
           render json: { data: @user.errors }, status: :unprocessable_entity
         end

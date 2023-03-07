@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AuthenticationController < ApplicationController
+    class AuthenticationController <  ApplicationApiController
       include Devise::Controllers::SignInOut
       skip_before_action :authenticate_user!
 
@@ -19,7 +19,7 @@ module Api
         return unless current_user
 
         sign_out(current_user)
-        render json: { msg: 'Godbye' }
+        render json: { msg: 'See you later!' }
       end
     end
   end

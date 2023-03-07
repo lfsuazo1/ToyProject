@@ -2,20 +2,19 @@
 
 module Api
   module V1
-    class QuestionsController < ApplicationController
+    class QuestionsController <  ApplicationApiController
       before_action :authenticate_user!
-      rescue_from ActionController::Unauthorized, with: :unauthorized
 
       def index
         @questions = Question.all
-        render json: serializer.new(@questions, include: ['user']), status: :ok
+        render json: @questions, include: ['user'], status: :ok
       end
 
       def create
         @question = Question.new(question_params)
         @question.user = current_user
         if @question.save
-          render json: serializer.new(@question, include: ['user']), status: :created
+          render json: @question, include: ['user'], status: :created
         else
           render json: { errors: @question.errors }, status: 422
         end
@@ -23,7 +22,7 @@ module Api
 
       def show
         @question = Question.find(params[:id])
-        render json: serializer.new(@question, include: ['user'])
+        render json: @question, include: ['user']
       rescue ActiveRecord::RecordNotFound
         render json: { error: { "status": 404, "detail": 'Object not found' } }, status: :not_found
       end
@@ -31,7 +30,7 @@ module Api
       def update
         @question = Question.find(params[:id])
         if @question.update(question_params)
-          render json: serializer.new(@question), status: :ok
+          render json: @question, status: :ok
         else
           render json: { data: @question.errors },
                  status: :unprocessable_entity

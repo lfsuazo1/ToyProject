@@ -6,6 +6,6 @@ require 'rufus-scheduler'
 scheduler = Rufus::Scheduler.new
 
 # scheduler.cron '0 9 * * 3'  do
-scheduler.every ENV['TIMING_MESSAGE'] do
+scheduler.cron ENV['TIMING_MESSAGE'] do
   SlackJob.perform_later
 end

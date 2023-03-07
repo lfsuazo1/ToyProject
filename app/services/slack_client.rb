@@ -9,66 +9,51 @@ module SlackClient
   end
 
   def post_message
-    question = Question.random
-    slack_message(ENV['SLACK_CHANNEL'],question)
+    slack_message
   end
 
-  def slack_message(channel,question)
-    number_of_questions = Question.count
+  def payload_format(title,message,option={"type": "divider"})
+    payload = {
+      channel: ENV['SLACK_CHANNEL'],
+      blocks: [
+        {
+          "type": 'section',
+          "text": {
+            "type": 'mrkdwn',
+            "text": "#{title}"
+          }
+        },
+        {
+          "type": 'section',
+          "text": {
+            "type": 'mrkdwn',
+            "text": "\n>  #{message}"
+          }
+        },option
+      ]
+    }
 
+  end
+
+  def slack_message
+    question = Question.random
+    number_of_questions = Question.count
     if number_of_questions.positive?
       question.destroy
-      payload = {
-        channel: channel,
-        blocks: [
+      quantity_topics={
+        "type": 'context',
+        "elements": [
           {
-            "type": 'section',
-            "text": {
-              "type": 'mrkdwn',
-              "text": 'Time for a topic! :meow_party:'
-            }
-          },
-          {
-            "type": 'section',
-            "text": {
-              "type": 'mrkdwn',
-              "text": "\n>  #{question.message}"
-            }
-          },
-          {
-            "type": 'context',
-            "elements": [
-              {
-                "type": 'plain_text',
-                "text": "Remaining topics in the pool: #{number_of_questions}",
-                "emoji": true
-              }
-            ]
+            "type": 'plain_text',
+            "text": "Remaining topics in the pool: #{number_of_questions}",
           }
         ]
       }
+      payload=payload_format("Time for a topic! :meow_party:",question.message,quantity_topics)
     else
-      payload = {
-        channel: channel,
-        blocks: [
-          {
-            "type": 'section',
-            "text": {
-              "type": 'mrkdwn',
-              "text": 'No more fun today :sadpepe:'
-            }
-          },
-          {
-            "type": 'section',
-            "text": {
-              "type": 'mrkdwn',
-              "text": "\n>  Please enter more questions"
-            }
-          }
-        ]
-      }
+      payload= payload_format("No more fun today :sadpepe:","Please enter more questions")
     end
-    client.chat_postMessage(payload)
+      client.chat_postMessage(payload)
   end
 
 
