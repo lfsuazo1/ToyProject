@@ -319,7 +319,6 @@ module Devise
         request.headers['Authorization'].present?
       end
 
-
       def authenticate!
         token   = request.headers.fetch('Authorization', '').split(' ').last
         payload = JsonWebToken.decode(token)

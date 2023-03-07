@@ -1,8 +1,10 @@
 # frozen_string_literal: true
+
 module Api
   module V1
     class QuestionsController < ApplicationController
       before_action :authenticate_user!
+      rescue_from ActionController::Unauthorized, with: :unauthorized
 
       def index
         @questions = Question.all
@@ -20,39 +22,40 @@ module Api
       end
 
       def show
-
-          @question = Question.find(params[:id])
-          render json: serializer.new(@question,include:['user'])
-        rescue ActiveRecord::RecordNotFound
-          render json: { error:{"status":404,"detail":"Object not found"} }, status: :not_found
-
+        @question = Question.find(params[:id])
+        render json: serializer.new(@question, include: ['user'])
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: { "status": 404, "detail": 'Object not found' } }, status: :not_found
       end
 
       def update
         @question = Question.find(params[:id])
         if @question.update(question_params)
-          render json: serializer.new(@question) , status: :ok
+          render json: serializer.new(@question), status: :ok
         else
-          render json: {data: @question.errors },
+          render json: { data: @question.errors },
                  status: :unprocessable_entity
         end
-        rescue ActiveRecord::RecordNotFound
-          render json: { error:{"status":404,"detail":"Object not found"} }, status: :not_found
+      rescue ActiveRecord::RecordNotFound
+        render json: { error: { "status": 404, "detail": 'Object not found' } }, status: :not_found
       end
 
       def destroy
         @question = Question.find(params[:id])
         if @question.destroy
-          render json:[], status: :ok
+          render json: [], status: :ok
         else
           render json: { errors: @question.errors }, status: :unprocessable_entity
         end
       rescue ActiveRecord::RecordNotFound
-        render json: { error:{"status":404,"detail":"Object not found"} }, status: :not_found
-
+        render json: { error: { "status": 404, "detail": 'Object not found' } }, status: :not_found
       end
 
       private
+
+      def unauthorized
+        render json: { error: "You are not authorized, please login or register." }, status: :unauthorized
+      end
 
       def serializer
         QuestionSerializer

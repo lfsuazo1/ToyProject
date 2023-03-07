@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DeviseHelper
   # Retain this method for backwards compatibility, deprecated in favor of modifying the
   # devise/shared/error_messages partial.
@@ -16,8 +18,8 @@ module DeviseHelper
       `rails g devise:views` which will copy all of them again to your app.
     DEPRECATION
 
-    return "" if resource.errors.empty?
+    return '' if resource.errors.empty?
 
-    render "devise/shared/error_messages", resource: resource
+    render 'devise/shared/error_messages', resource:
   end
 end

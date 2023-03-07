@@ -9,19 +9,23 @@ module SlackClient
   end
 
   def post_message
-    question = Question.order('RANDOM()').first
-    size = Question.count
+    question = Question.random
+    slack_message(ENV['SLACK_CHANNEL'],question)
+  end
 
-    if size.positive?
+  def slack_message(channel,question)
+    number_of_questions = Question.count
+
+    if number_of_questions.positive?
       question.destroy
       payload = {
-        channel: '#slack-message-testing',
+        channel: channel,
         blocks: [
           {
             "type": 'section',
             "text": {
               "type": 'mrkdwn',
-              "text": 'Time of a topic! :meow_party:'
+              "text": 'Time for a topic! :meow_party:'
             }
           },
           {
@@ -36,17 +40,16 @@ module SlackClient
             "elements": [
               {
                 "type": 'plain_text',
-                "text": "Remaining topics in the pool: #{size}",
+                "text": "Remaining topics in the pool: #{number_of_questions}",
                 "emoji": true
               }
             ]
           }
         ]
       }
-      client.chat_postMessage(payload)
     else
-      payload2 = {
-        channel: '#slack-message-testing',
+      payload = {
+        channel: channel,
         blocks: [
           {
             "type": 'section',
@@ -64,7 +67,10 @@ module SlackClient
           }
         ]
       }
-      client.chat_postMessage(payload2)
     end
+    client.chat_postMessage(payload)
   end
+
+
+
 end

@@ -9,7 +9,7 @@ as defined by the routes in the `admin/` namespace
 
 <nav class="navigation" role="navigation">
   <%= link_to(t("administrate.navigation.back_to_app"), root_url, class: "button button--alt button--nav") if defined?(root_url) %>
-  <%= link_to 'sig out', destroy_user_session_path, method: :delete, class: 'button button--danger button--nav',
+  <%= link_to 'Sign out', destroy_user_session_path, method: :delete, class: 'button button--danger button--nav',
   data: { confirm: 'Are you sure?' },
   :to => new_user_session_path %>
 

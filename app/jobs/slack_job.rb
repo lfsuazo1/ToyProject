@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MyJob < ApplicationJob
+class SlackJob < ApplicationJob
   include SlackClient
   queue_as :default
 

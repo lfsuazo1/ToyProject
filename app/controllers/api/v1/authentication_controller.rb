@@ -16,12 +16,11 @@ module Api
       end
 
       def destroy
-        if current_user
-          sign_out(current_user)
-          render json: {msg:"Godbye"}
-        end
-      end
+        return unless current_user
 
+        sign_out(current_user)
+        render json: { msg: 'Godbye' }
+      end
     end
   end
 end

@@ -2,12 +2,10 @@
 
 require 'rufus-scheduler'
 
-# Inicializa un objeto scheduler
+# Initializes a scheduler object
 scheduler = Rufus::Scheduler.new
 
-# Agrega una tarea que se ejecute cada miercoles a las 9am
-#scheduler.cron '0 9 * * 3'  do
-scheduler.cron '0 9 * * 3'  do
-  # Envía la tarea a Delayed Job
-  MyJob.perform_later
+# scheduler.cron '0 9 * * 3'  do
+scheduler.every ENV['TIMING_MESSAGE'] do
+  SlackJob.perform_later
 end

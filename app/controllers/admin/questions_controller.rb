@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class QuestionsController < Admin::ApplicationController
     before_action :authenticate_user!
@@ -7,7 +9,7 @@ module Admin
       resource = resource_class.new(attributes)
       authorize_resource(resource)
       resource.save!
-      redirect_to [namespace, resource], notice: translate_with_resource("create.success")
+      redirect_to [namespace, resource], notice: translate_with_resource('create.success')
     end
 
     # Override this method to specify custom lookup behavior.
