@@ -1,3 +1,6 @@
+# ToyProject
+
+The project consists of creating an API that will periodically send a message to a Slack channel with a random topic or question to be discussed among channel members.
 # README
 
 This README would normally document whatever steps are necessary to get the
