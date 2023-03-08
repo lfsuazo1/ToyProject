@@ -3,11 +3,10 @@
 module Api
   module V1
     class UsersController < ApplicationApiController
-      #skip_before_action :authenticate_user!
       before_action :authenticate_user!, except: :create
       def index
         @users = User.all
-        render json: @users, include: ['question'], status: :ok
+        render json: @users, status: :ok
       end
 
       def create
