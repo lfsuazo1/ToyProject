@@ -12,7 +12,7 @@ module SlackClient
     slack_message
   end
 
-  def payload_format(title,message,option={"type": "divider"})
+  def payload_format(title, message, option = { "type": 'divider' })
     payload = {
       channel: ENV['SLACK_CHANNEL'],
       blocks: [
@@ -20,7 +20,7 @@ module SlackClient
           "type": 'section',
           "text": {
             "type": 'mrkdwn',
-            "text": "#{title}"
+            "text": title.to_s
           }
         },
         {
@@ -29,10 +29,9 @@ module SlackClient
             "type": 'mrkdwn',
             "text": "\n>  #{message}"
           }
-        },option
+        }, option
       ]
     }
-
   end
 
   def slack_message
@@ -40,22 +39,19 @@ module SlackClient
     number_of_questions = Question.count
     if number_of_questions.positive?
       question.destroy
-      quantity_topics={
+      quantity_topics = {
         "type": 'context',
         "elements": [
           {
             "type": 'plain_text',
-            "text": "Remaining topics in the pool: #{number_of_questions}",
+            "text": "Remaining topics in the pool: #{number_of_questions}"
           }
         ]
       }
-      payload=payload_format("Time for a topic! :meow_party:",question.message,quantity_topics)
+      payload = payload_format('Time for a topic! :meow_party:', question.message, quantity_topics)
     else
-      payload= payload_format("No more fun today :sadpepe:","Please enter more questions")
+      payload = payload_format('No more fun today :sadpepe:', 'Please enter more questions')
     end
-      client.chat_postMessage(payload)
+    client.chat_postMessage(payload)
   end
-
-
-
 end

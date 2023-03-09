@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class AuthenticationController <  ApplicationApiController
+    class AuthenticationController < ApplicationController
       include Devise::Controllers::SignInOut
       skip_before_action :authenticate_user!
 
@@ -20,6 +20,11 @@ module Api
 
         sign_out(current_user)
         render json: { msg: 'See you later!' }
+      end
+
+      private
+      def serializer
+        QuestionSerializer
       end
     end
   end

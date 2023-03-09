@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class QuestionsController <  ApplicationApiController
+    class QuestionsController < ApplicationApiController
       before_action :authenticate_user!
 
       def index
@@ -53,7 +53,7 @@ module Api
       private
 
       def unauthorized
-        render json: { error: "You are not authorized, please login or register." }, status: :unauthorized
+        render json: { error: 'You are not authorized, please login or register.' }, status: :unauthorized
       end
 
       def serializer
