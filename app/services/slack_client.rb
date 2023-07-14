@@ -39,6 +39,7 @@ module SlackClient
     number_of_questions = Question.count
     if number_of_questions.positive?
       question.destroy
+      number_of_questions -= 1
       quantity_topics = {
         "type": 'context',
         "elements": [
